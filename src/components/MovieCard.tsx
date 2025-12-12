@@ -1,18 +1,25 @@
-import React, { useContext } from 'react';
-import type  Movie  from '../services/api';
-import './MovieCard.css';
-import { FaHeart, FaEye } from 'react-icons/fa';
-import { ListsContext } from '../contexts/ListsContext';
+import { useContext } from "react";
+import type { Movie } from "../services/api";
+import "./MovieCard.css";
+import { FaHeart, FaEye } from "react-icons/fa";
+import { ListsContext } from "../contexts/ListsContext";
 
 interface MovieCardProps {
   movie: Movie;
 }
 
-const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
-  const { likedMovies, watchlist, addLikedMovie, removeLikedMovie, addToWatchlist, removeFromWatchlist } = useContext(ListsContext);
+export default function MovieCard({ movie }: MovieCardProps) {
+  const {
+    likedMovies,
+    watchlist,
+    addLikedMovie,
+    removeLikedMovie,
+    addToWatchlist,
+    removeFromWatchlist,
+  } = useContext(ListsContext);
 
-  const isLiked = likedMovies.some(m => m.id === movie.id);
-  const isInWatchlist = watchlist.some(m => m.id === movie.id);
+  const isLiked = likedMovies.some((m) => m.id === movie.id);
+  const isInWatchlist = watchlist.some((m) => m.id === movie.id);
 
   const handleLikeClick = () => {
     if (isLiked) {
@@ -32,25 +39,25 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
 
   const posterUrl = movie.poster_path
     ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-    : 'https://via.placeholder.com/500x750.png?text=No+Image';
+    : "https://via.placeholder.com/500x750.png?text=No+Image";
 
   return (
     <div className="movie-card">
       <img src={posterUrl} alt={movie.title} />
+
       <div className="movie-info">
         <h3>{movie.title}</h3>
         <span>{movie.vote_average}</span>
       </div>
+
       <div className="movie-actions">
         <button onClick={handleLikeClick}>
-          <FaHeart className={isLiked ? 'gold' : ''} />
+          <FaHeart className={isLiked ? "gold" : ""} />
         </button>
         <button onClick={handleWatchlistClick}>
-          <FaEye className={isInWatchlist ? 'gold' : ''} />
+          <FaEye className={isInWatchlist ? "gold" : ""} />
         </button>
       </div>
     </div>
   );
-};
-
-export default MovieCard;
+}
