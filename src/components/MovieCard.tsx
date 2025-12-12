@@ -1,15 +1,35 @@
-import React from 'react';
-import type Movie from '../services/api';
+import React, { useContext } from 'react';
+import type  Movie  from '../services/api';
 import './MovieCard.css';
 import { FaHeart, FaEye } from 'react-icons/fa';
+import { ListsContext } from '../contexts/ListsContext';
 
 interface MovieCardProps {
   movie: Movie;
-  onLike: (movie: Movie) => void;
-  onAddToWatchlist: (movie: Movie) => void;
 }
 
-const MovieCard: React.FC<MovieCardProps> = ({ movie, onLike, onAddToWatchlist }) => {
+const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
+  const { likedMovies, watchlist, addLikedMovie, removeLikedMovie, addToWatchlist, removeFromWatchlist } = useContext(ListsContext);
+
+  const isLiked = likedMovies.some(m => m.id === movie.id);
+  const isInWatchlist = watchlist.some(m => m.id === movie.id);
+
+  const handleLikeClick = () => {
+    if (isLiked) {
+      removeLikedMovie(movie.id);
+    } else {
+      addLikedMovie(movie);
+    }
+  };
+
+  const handleWatchlistClick = () => {
+    if (isInWatchlist) {
+      removeFromWatchlist(movie.id);
+    } else {
+      addToWatchlist(movie);
+    }
+  };
+
   const posterUrl = movie.poster_path
     ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
     : 'https://via.placeholder.com/500x750.png?text=No+Image';
@@ -22,11 +42,11 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, onLike, onAddToWatchlist }
         <span>{movie.vote_average}</span>
       </div>
       <div className="movie-actions">
-        <button onClick={() => onLike(movie)}>
-          <FaHeart />
+        <button onClick={handleLikeClick}>
+          <FaHeart className={isLiked ? 'gold' : ''} />
         </button>
-        <button onClick={() => onAddToWatchlist(movie)}>
-          <FaEye />
+        <button onClick={handleWatchlistClick}>
+          <FaEye className={isInWatchlist ? 'gold' : ''} />
         </button>
       </div>
     </div>

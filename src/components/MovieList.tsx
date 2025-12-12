@@ -1,22 +1,36 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { getPopularMovies } from '../services/api';
-import type Movie from '../services/api';
+import React, { useEffect, useState } from 'react';
+import { getPopularMovies} from '../services/api';
+import type  Movie  from '../services/api';
 import MovieCard from './MovieCard';
-import { ListsContext } from '../contexts/ListsContext';
 import './MovieList.css';
 
 const MovieList: React.FC = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
-  const { addLikedMovie, addToWatchlist } = useContext(ListsContext);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchMovies = async () => {
-      const popularMovies = await getPopularMovies();
-      setMovies(popularMovies);
+      try {
+        const popularMovies = await getPopularMovies();
+        setMovies(popularMovies);
+      } catch {
+        setError('Failed to fetch movies.');
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchMovies();
   }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
 
   return (
     <div className="movie-list">
@@ -24,8 +38,6 @@ const MovieList: React.FC = () => {
         <MovieCard
           key={movie.id}
           movie={movie}
-          onLike={addLikedMovie}
-          onAddToWatchlist={addToWatchlist}
         />
       ))}
     </div>

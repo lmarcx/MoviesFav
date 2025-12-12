@@ -1,5 +1,5 @@
 import React, { createContext, useState, type ReactNode } from 'react';
-import type Movie from '../services/api';
+import type  Movie  from '../services/api';
 
 interface ListsContextData {
   likedMovies: Movie[];
@@ -21,7 +21,9 @@ export const ListsProvider: React.FC<ListsProviderProps> = ({ children }) => {
   const [watchlist, setWatchlist] = useState<Movie[]>([]);
 
   const addLikedMovie = (movie: Movie) => {
-    setLikedMovies(prev => [...prev, movie]);
+    if (!likedMovies.find(m => m.id === movie.id)) {
+      setLikedMovies(prev => [...prev, movie]);
+    }
   };
 
   const removeLikedMovie = (movieId: number) => {
@@ -29,7 +31,9 @@ export const ListsProvider: React.FC<ListsProviderProps> = ({ children }) => {
   };
 
   const addToWatchlist = (movie: Movie) => {
-    setWatchlist(prev => [...prev, movie]);
+    if (!watchlist.find(m => m.id === movie.id)) {
+      setWatchlist(prev => [...prev, movie]);
+    }
   };
 
   const removeFromWatchlist = (movieId: number) => {

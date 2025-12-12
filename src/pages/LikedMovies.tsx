@@ -4,7 +4,7 @@ import MovieCard from '../components/MovieCard';
 import './LikedMovies.css';
 
 const LikedMovies: React.FC = () => {
-  const { likedMovies, removeLikedMovie, addToWatchlist } = useContext(ListsContext);
+  const { likedMovies } = useContext(ListsContext);
 
   return (
     <div className="liked-movies">
@@ -14,8 +14,6 @@ const LikedMovies: React.FC = () => {
           <MovieCard
             key={movie.id}
             movie={movie}
-            onLike={() => removeLikedMovie(movie.id)}
-            onAddToWatchlist={addToWatchlist}
           />
         ))}
       </div>
