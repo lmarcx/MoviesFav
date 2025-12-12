@@ -1,36 +1,30 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Header from './components/Header';
+import MovieList from './components/MovieList';
+import LikedMovies from './pages/LikedMovies';
+import Watchlist from './pages/Watchlist';
+import { ListsProvider } from './contexts/ListsContext';
+import './App.css';
 
-function App() {
-  const [count, setCount] = useState(0)
-
+const App: React.FC = () => {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <button onClick={()=> setCount(0)}>Reset</button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <ListsProvider>
+      <Router>
+        <div className="App">
+          <Header />
+          <main>
+            <Routes>
+              <Route path="/" element={<MovieList />} />
+              <Route path="/liked" element={<LikedMovies />} />
+              <Route path="/watchlist" element={<Watchlist />} />
+            </Routes>
+          </main>
+        </div>
+      </Router>
+    </ListsProvider>
+  );
+};
 
-export default App
+export default App;
+

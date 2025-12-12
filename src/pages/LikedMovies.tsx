@@ -1,0 +1,26 @@
+import React, { useContext } from 'react';
+import { ListsContext } from '../contexts/ListsContext';
+import MovieCard from '../components/MovieCard';
+import './LikedMovies.css';
+
+const LikedMovies: React.FC = () => {
+  const { likedMovies, removeLikedMovie, addToWatchlist } = useContext(ListsContext);
+
+  return (
+    <div className="liked-movies">
+      <h2>Liked Movies</h2>
+      <div className="movie-list">
+        {likedMovies.map(movie => (
+          <MovieCard
+            key={movie.id}
+            movie={movie}
+            onLike={() => removeLikedMovie(movie.id)}
+            onAddToWatchlist={addToWatchlist}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default LikedMovies;
