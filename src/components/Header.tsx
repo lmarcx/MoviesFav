@@ -1,8 +1,7 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import './Header.css';
+import { Link } from "react-router-dom";
+import "./Header.css";
 
-const Header: React.FC = () => {
+export default function Header() {
   return (
     <header className="header">
       <div className="logo">
@@ -23,6 +22,4 @@ const Header: React.FC = () => {
       </nav>
     </header>
   );
-};
-
-export default Header;
+}

@@ -1,13 +1,12 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Header from './components/Header';
-import MovieList from './components/MovieList';
-import LikedMovies from './pages/LikedMovies';
-import Watchlist from './pages/Watchlist';
-import { ListsProvider } from './contexts/ListsContext';
-import './App.css';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Header from "./components/Header";
+import MovieList from "./components/MovieList";
+import LikedMovies from "./pages/LikedMovies";
+import Watchlist from "./pages/Watchlist";
+import { ListsProvider } from "./contexts/ListsContext";
+import "./App.css";
 
-const App: React.FC = () => {
+export default function App() {
   return (
     <ListsProvider>
       <Router>
@@ -24,7 +23,4 @@ const App: React.FC = () => {
       </Router>
     </ListsProvider>
   );
-};
-
-export default App;
-
+}

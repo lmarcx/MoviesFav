@@ -1,5 +1,5 @@
-import React, { createContext, useState, type ReactNode } from 'react';
-import type  Movie  from '../services/api';
+import { createContext, useState, type ReactNode } from "react";
+import type {Movie} from "../services/api";
 
 interface ListsContextData {
   likedMovies: Movie[];
@@ -10,34 +10,36 @@ interface ListsContextData {
   removeFromWatchlist: (movieId: number) => void;
 }
 
-export const ListsContext = createContext<ListsContextData>({} as ListsContextData);
+export const ListsContext = createContext<ListsContextData>(
+  {} as ListsContextData
+);
 
 interface ListsProviderProps {
   children: ReactNode;
 }
 
-export const ListsProvider: React.FC<ListsProviderProps> = ({ children }) => {
+export function ListsProvider({ children }: ListsProviderProps) {
   const [likedMovies, setLikedMovies] = useState<Movie[]>([]);
   const [watchlist, setWatchlist] = useState<Movie[]>([]);
 
   const addLikedMovie = (movie: Movie) => {
-    if (!likedMovies.find(m => m.id === movie.id)) {
-      setLikedMovies(prev => [...prev, movie]);
-    }
+    setLikedMovies((prev) =>
+      prev.some((m) => m.id === movie.id) ? prev : [...prev, movie]
+    );
   };
 
   const removeLikedMovie = (movieId: number) => {
-    setLikedMovies(prev => prev.filter(movie => movie.id !== movieId));
+    setLikedMovies((prev) => prev.filter((movie) => movie.id !== movieId));
   };
 
   const addToWatchlist = (movie: Movie) => {
-    if (!watchlist.find(m => m.id === movie.id)) {
-      setWatchlist(prev => [...prev, movie]);
-    }
+    setWatchlist((prev) =>
+      prev.some((m) => m.id === movie.id) ? prev : [...prev, movie]
+    );
   };
 
   const removeFromWatchlist = (movieId: number) => {
-    setWatchlist(prev => prev.filter(movie => movie.id !== movieId));
+    setWatchlist((prev) => prev.filter((movie) => movie.id !== movieId));
   };
 
   return (
@@ -54,4 +56,4 @@ export const ListsProvider: React.FC<ListsProviderProps> = ({ children }) => {
       {children}
     </ListsContext.Provider>
   );
-};
+}
