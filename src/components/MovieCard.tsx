@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { Link } from "react-router-dom";
 import type { Movie } from "../services/api";
 import "./MovieCard.css";
 import { FaHeart, FaEye } from "react-icons/fa";
@@ -21,7 +22,8 @@ export default function MovieCard({ movie }: MovieCardProps) {
   const isLiked = likedMovies.some((m) => m.id === movie.id);
   const isInWatchlist = watchlist.some((m) => m.id === movie.id);
 
-  const handleLikeClick = () => {
+  const handleLikeClick = (e: React.MouseEvent) => {
+    e.preventDefault();
     if (isLiked) {
       removeLikedMovie(movie.id);
     } else {
@@ -29,7 +31,8 @@ export default function MovieCard({ movie }: MovieCardProps) {
     }
   };
 
-  const handleWatchlistClick = () => {
+  const handleWatchlistClick = (e: React.MouseEvent) => {
+    e.preventDefault();
     if (isInWatchlist) {
       removeFromWatchlist(movie.id);
     } else {
@@ -42,11 +45,11 @@ export default function MovieCard({ movie }: MovieCardProps) {
     : "https://via.placeholder.com/500x750.png?text=No+Image";
 
   return (
-    <div className="movie-card">
+    <Link to={`/movie/${movie.id}`} className="movie-card">
       <img src={posterUrl} alt={movie.title} />
 
       <div className="movie-info">
-        <h3>{movie.title}</h3>
+        <h3 className="movie-title">{movie.title}</h3>
         <span>{movie.vote_average}</span>
       </div>
 
@@ -58,6 +61,6 @@ export default function MovieCard({ movie }: MovieCardProps) {
           <FaEye className={isInWatchlist ? "gold" : ""} />
         </button>
       </div>
-    </div>
+    </Link>
   );
 }
