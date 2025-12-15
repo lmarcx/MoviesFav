@@ -8,6 +8,7 @@ export interface Movie {
   overview: string;
   vote_average: number;
   genre_ids: number[];
+  release_date: string;
 }
 
 export const getPopularMovies = async (): Promise<Movie[]> => {
@@ -22,4 +23,10 @@ export const searchMovies = async (query: string): Promise<Movie[]> => {
   );
   const data = await response.json();
   return data.results;
+};
+
+export const getMovieById = async (id: string): Promise<Movie> => {
+  const response = await fetch(`${BASE_URL}/movie/${id}?api_key=${API_KEY}&language=en-US`);
+  const data = await response.json();
+  return data;
 };
