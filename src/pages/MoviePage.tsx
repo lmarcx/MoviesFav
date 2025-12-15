@@ -43,12 +43,21 @@ const MoviePage = () => {
     ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
     : "https://via.placeholder.com/500x750.png?text=No+Image";
 
+  // Safely extract release year or fallback to "Unknown"
+  let releaseYear = "Unknown";
+  if (movie.release_date) {
+    const date = new Date(movie.release_date);
+    if (!isNaN(date.getTime())) {
+      releaseYear = date.getFullYear().toString();
+    }
+  }
+
   return (
     <div className="movie-page">
       <img src={posterUrl} alt={movie.title} className="movie-page-poster" />
       <div className="movie-page-details">
         <h1>
-          {movie.title} ({new Date(movie.release_date).getFullYear()})
+          {movie.title} ({releaseYear})
         </h1>
         <p>{movie.overview}</p>
         <p>
