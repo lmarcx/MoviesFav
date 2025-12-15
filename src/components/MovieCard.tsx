@@ -49,7 +49,7 @@ export default function MovieCard({ movie }: MovieCardProps) {
       <img src={posterUrl} alt={movie.title} />
 
       <div className="movie-info">
-        <span>{movie.title}</span>
+        <h3 className="movie-title">{movie.title}</h3>
         <span>{movie.vote_average}</span>
       </div>
 
