@@ -24,6 +24,9 @@ const MoviePage = () => {
       };
 
       fetchMovie();
+    } else {
+      setError("No movie ID provided.");
+      setLoading(false);
     }
   }, [id]);
 
