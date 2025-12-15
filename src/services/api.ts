@@ -27,6 +27,9 @@ export const searchMovies = async (query: string): Promise<Movie[]> => {
 
 export const getMovieById = async (id: string): Promise<Movie> => {
   const response = await fetch(`${BASE_URL}/movie/${id}?api_key=${API_KEY}&language=en-US`);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch movie with id ${id}: ${response.status} ${response.statusText}`);
+  }
   const data = await response.json();
   return data;
 };
