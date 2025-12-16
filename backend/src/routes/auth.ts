@@ -16,6 +16,12 @@ const loginSchema = z.object({
   password: z.string(),
 });
 
+const jwtSecret = process.env.JWT_SECRET;
+
+if (!jwtSecret) {
+  throw new Error('JWT_SECRET is not defined in environment variables');
+}
+
 router.post('/register', async (req, res, next) => {
   try {
     const { username, password } = registerSchema.parse(req.body);
@@ -39,7 +45,7 @@ router.post('/register', async (req, res, next) => {
       user: newUser.rows[0],
     });
   } catch (error) {
-    if (error.code === '23505') { // unique_violation
+    if (error instanceof Error && 'code' in error && error.code === '23505') { // unique_violation
         return res.status(409).json({ message: 'Username already exists' });
     }
     next(error);
@@ -63,7 +69,7 @@ router.post('/login', async (req, res, next) => {
 
     const token = jwt.sign(
       { id: user.id, role: user.role_id },
-      process.env.JWT_SECRET,
+      jwtSecret,
       { expiresIn: '1h' }
     );
 
