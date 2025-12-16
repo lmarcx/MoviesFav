@@ -1,0 +1,28 @@
+###
+# @name Register User
+POST http://localhost:3000/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "password": "password123"
+}
+
+###
+# @name Login User
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "password": "password123"
+}
+
+###
+# @name Get Users (Unauthorized)
+GET http://localhost:3000/api/users
+
+###
+# @name Get Users (Authorized)
+GET http://localhost:3000/api/users
+Authorization: Bearer {{Login User.response.body.token}}
