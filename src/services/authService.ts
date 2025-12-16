@@ -10,7 +10,7 @@ const register = (username: string, password: string) => {
   });
 };
 
-const login = async (username, password) => {
+const login = async (username: string, password: string) => {
   const response = await axios.post(`${API_URL}/login`, {
     username,
     password,
