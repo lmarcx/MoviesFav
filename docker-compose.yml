@@ -8,9 +8,16 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: movieapp
     ports:
-      - '5432:5432'
+      - '5433:5432'
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql
+
+  adminer:
+    image: adminer
+    container_name: movie-app-adminer
+    restart: always
+    ports:
+      - '8080:8080'
 
 volumes:
   postgres_data:

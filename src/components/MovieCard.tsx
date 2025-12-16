@@ -4,6 +4,7 @@ import type { Movie } from "../services/api";
 import "./MovieCard.css";
 import { FaHeart, FaEye } from "react-icons/fa";
 import { ListsContext } from "../contexts/ListsContext";
+import { useAuth } from "../contexts/AuthContext";
 
 interface MovieCardProps {
   movie: Movie;
@@ -18,6 +19,8 @@ export default function MovieCard({ movie }: MovieCardProps) {
     addToWatchlist,
     removeFromWatchlist,
   } = useContext(ListsContext);
+
+  const { isAuthenticated } = useAuth();
 
   const isLiked = likedMovies.some((m) => m.id === movie.id);
   const isInWatchlist = watchlist.some((m) => m.id === movie.id);
@@ -53,14 +56,16 @@ export default function MovieCard({ movie }: MovieCardProps) {
         <span>{movie.vote_average}</span>
       </div>
 
-      <div className="movie-actions">
-        <button onClick={handleLikeClick}>
-          <FaHeart className={isLiked ? "gold" : ""} />
-        </button>
-        <button onClick={handleWatchlistClick}>
-          <FaEye className={isInWatchlist ? "gold" : ""} />
-        </button>
-      </div>
+      {isAuthenticated && (
+        <div className="movie-actions">
+          <button onClick={handleLikeClick}>
+            <FaHeart className={isLiked ? "gold" : ""} />
+          </button>
+          <button onClick={handleWatchlistClick}>
+            <FaEye className={isInWatchlist ? "gold" : ""} />
+          </button>
+        </div>
+      )}
     </Link>
   );
 }

@@ -15,15 +15,21 @@ export default function Header() {
           <li>
             <Link to="/">Home</Link>
           </li>
-          <li>
-            <Link to="/liked">Liked Movies</Link>
-          </li>
-          <li>
-            <Link to="/watchlist">Watchlist</Link>
-          </li>
+          {isAuthenticated && (
+            <>
+              <li>
+                <Link to="/liked">Liked Movies</Link>
+              </li>
+              <li>
+                <Link to="/watchlist">Watchlist</Link>
+              </li>
+            </>
+          )}
           {isAuthenticated ? (
             <li>
-              <button onClick={logout} className="logout-button">Logout</button>
+              <button onClick={logout} className="logout-button">
+                Logout
+              </button>
             </li>
           ) : (
             <>

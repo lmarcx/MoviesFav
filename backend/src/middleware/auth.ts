@@ -15,10 +15,10 @@ const auth = (req: AuthRequest, res: Response, next: NextFunction) => {
   const token = authHeader.split(' ')[1];
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET) as { id: number; role: number; iat: number; exp: number };
+    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as unknown as { id: number; role: number; iat: number; exp: number };
     req.user = { id: decoded.id, role: decoded.role };
     next();
-  } catch (error) {
+  } catch {
     return res.status(401).json({ message: 'Invalid token' });
   }
 };

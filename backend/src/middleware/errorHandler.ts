@@ -11,7 +11,7 @@ const errorHandler = (err: AppError, req: Request, res: Response, next: NextFunc
   if (err instanceof ZodError) {
     return res.status(400).json({
       message: 'Validation failed',
-      errors: err.errors.map(e => ({ path: e.path, message: e.message })),
+      errors: err.issues.map(e => ({ path: e.path, message: e.message })),
     });
   }
 
