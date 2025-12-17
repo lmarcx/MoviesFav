@@ -1,24 +1,25 @@
-import { prisma } from "../prisma";
+import { query } from "../db";
 
 export async function toggleLikedMovie(userId: number, movieId: string) {
   // Vérifie si le like existe
-  const existing = await prisma.likedMovie.findUnique({
-    where: {
-      userId_movieId: { userId, movieId },
-    },
-  });
+  const existing = await query(
+    "SELECT * FROM LikedMovie WHERE userId = $1 AND movieId = $2",
+    [userId, movieId]
+  );
 
-  if (existing) {
+  if (existing.rows.length > 0) {
     // Supprime le like
-    await prisma.likedMovie.delete({
-      where: { userId_movieId: { userId, movieId } },
-    });
+    await query("DELETE FROM LikedMovie WHERE userId = $1 AND movieId = $2", [
+      userId,
+      movieId,
+    ]);
     return { action: "removed" };
   } else {
     // Ajoute le like
-    await prisma.likedMovie.create({
-      data: { userId, movieId },
-    });
+    await query(
+      "INSERT INTO LikedMovie (userId, movieId) VALUES ($1, $2)",
+      [userId, movieId]
+    );
     return { action: "added" };
   }
 }

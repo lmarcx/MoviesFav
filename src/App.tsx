@@ -21,7 +21,7 @@ export default function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/movie/:id" element={<MoviePage />} />
-            <Route path="/liked" element={<PrivateRoute />}>
+            <Route path="/:userId/liked" element={<PrivateRoute />}>
               <Route index element={<LikedMovies />} />
             </Route>
             <Route path="/watchlist" element={<PrivateRoute />}>

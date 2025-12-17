@@ -20,19 +20,38 @@ export default function MovieCard({ movie }: MovieCardProps) {
     removeFromWatchlist,
   } = useContext(ListsContext);
 
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
   const isLiked = likedMovies.some((m) => m.id === movie.id);
   const isInWatchlist = watchlist.some((m) => m.id === movie.id);
 
-  const handleLikeClick = (e: React.MouseEvent) => {
+  const handleLikeClick = async (e: React.MouseEvent) => {
     e.preventDefault();
-    if (isLiked) {
-      removeLikedMovie(movie.id);
-    } else {
-      addLikedMovie(movie);
-    }
-  };
+    if (!isAuthenticated || !user) return;
+
+   try {
+    const response = await fetch(
+      `http://localhost:3000/users/${user.id}/liked`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ movieId: movie.id }),
+      }
+    );
+    console.log(response);
+    if (!response.ok) throw new Error("Failed to toggle like");
+
+    // Optionnel : récupérer l'action renvoyée par le backend
+    const data = await response.json();
+
+    // Mettre à jour le contexte local
+    if (data.action === "added") addLikedMovie(movie);
+    else removeLikedMovie(movie.id);
+  } catch (err) {
+    console.error(err);
+  }
+};
 
   const handleWatchlistClick = (e: React.MouseEvent) => {
     e.preventDefault();
