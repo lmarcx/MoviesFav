@@ -4,9 +4,27 @@ import { toggleLikedMovie } from "../services/likedMovieService";
 
 const router = Router();
 
-router.post("/:userId/liked", async (req, res, next) => {
+const ensureAuthenticatedUserMatchesParam = (req: any, res: any, next: any) => {
+  const authenticatedUserId = req.user && req.user.id;
+  if (!authenticatedUserId) {
+    return res.status(401).json({ message: "Authentication required" });
+  }
+
+  const paramUserId = parseInt(req.params.userId, 10);
+  if (Number.isNaN(paramUserId)) {
+    return res.status(400).json({ message: "Invalid userId parameter" });
+  }
+
+  if (authenticatedUserId !== paramUserId) {
+    return res.status(403).json({ message: "Forbidden: cannot modify another user's liked movies" });
+  }
+
+  next();
+};
+
+router.post("/:userId/liked", ensureAuthenticatedUserMatchesParam, async (req, res, next) => {
   try {
-    const userId = parseInt(req.params.userId);
+    const userId = parseInt(req.params.userId, 10);
     const { movieId } = req.body;
 
     const result = await toggleLikedMovie(userId, movieId);
