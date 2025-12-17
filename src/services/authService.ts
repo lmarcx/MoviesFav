@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 
-const API_URL = '/api/auth'; // Using relative URL, assuming proxy is set up in vite.config.ts
+const API_URL = '/api/auth'; // Using relative URL, with proxy is set up in vite.config.ts
 
 const register = (username: string, password: string) => {
   return axios.post(`${API_URL}/register`, {
