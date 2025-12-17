@@ -1,32 +1,22 @@
 import { Router } from "express";
-import { prisma } from "../prisma"; // ton PrismaClient
+import { toggleLikedMovie } from "../services/likedMovieService";
+
 
 const router = Router();
 
-router.post('/:userId/liked', async (req, res, next) => {
+router.post("/:userId/liked", async (req, res, next) => {
   try {
-    const { userId } = req.params;
+    const userId = parseInt(req.params.userId);
     const { movieId } = req.body;
 
-    // Création avec Prisma
-    const likedMovie = await prisma.likedMovie.upsert({
-      where: {
-        userId_movieId: {  // correspond à @@unique([userId, movieId])
-          userId: parseInt(userId),
-          movieId: movieId
-        }
-      },
-      update: {}, // ne rien faire si déjà existant
-      create: {
-        userId: parseInt(userId),
-        movieId: movieId,
-      }
-    });
+    const result = await toggleLikedMovie(userId, movieId);
 
-    res.status(201).json({ message: 'Movie added to liked movies', likedMovie });
-  } catch (error) {
-    next(error);
+    res.status(200).json({ message: `Movie ${result.action}`, action: result.action });
+  } catch (err) {
+    next(err);
   }
 });
 
 export default router;
+
+
