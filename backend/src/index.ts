@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import { initializeDatabase } from './db/init';
 import { query } from './db';
 import authRouter from './routes/auth';
+import userRouter from './routes/user';
 import auth from './middleware/auth';
 import cors from 'cors';
 import errorHandler from './middleware/errorHandler';
@@ -12,8 +13,12 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(cors());
+app.use(cors( {
+  origin: "http://localhost:5173",
+  credentials: true
+} ));
 app.use(express.json());
+app.use("/users", userRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello from the backend!');
