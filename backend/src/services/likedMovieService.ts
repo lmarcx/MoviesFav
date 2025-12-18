@@ -1,6 +1,6 @@
 import { query } from "../db";
 
-export async function toggleLikedMovie(userId: number, movieId: string) {
+export async function toggleLikedMovie(userId: number, movieId: number) {
   // Vérifie si le like existe
   const existing = await query(
     "SELECT * FROM LikedMovie WHERE userId = $1 AND movieId = $2",

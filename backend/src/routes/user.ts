@@ -27,8 +27,8 @@ router.post("/:userId/liked", ensureAuthenticatedUserMatchesParam, async (req, r
     const userId = parseInt(req.params.userId, 10);
     const { movieId } = req.body;
 
-    if (typeof movieId !== "string" || movieId.trim().length === 0) {
-      return res.status(400).json({ error: "movieId must be a non-empty string" });
+    if (typeof movieId !== "number" || isNaN(movieId)) {
+      return res.status(400).json({ error: "movieId must be a number" });
     }
     const result = await toggleLikedMovie(userId, movieId);
 
