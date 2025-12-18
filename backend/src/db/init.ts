@@ -17,11 +17,23 @@ const createTables = async () => {
     );
   `;
 
+  const createLikedMoviesTable = `
+  CREATE TABLE IF NOT EXISTS liked_movies (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    movie_id INTEGER NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (user_id, movie_id)
+  );
+`;
+
   try {
     await query(createRolesTable);
     console.log('Roles table created successfully');
     await query(createUsersTable);
     console.log('Users table created successfully');
+    await query(createLikedMoviesTable);
+    console.log('Liked Movies table created successfully');
   } catch (err) {
     console.error('Error creating tables', err);
     throw err;

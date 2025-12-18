@@ -1,15 +1,15 @@
 import { query } from "../db";
 
-export async function toggleLikedMovie(userId: number, movieId: string) {
+export async function toggleLikedMovie(userId: number, movieId: number) {
   // Vérifie si le like existe
   const existing = await query(
-    "SELECT * FROM LikedMovie WHERE userId = $1 AND movieId = $2",
+    "SELECT 1 FROM liked_movies WHERE user_id = $1 AND movie_id = $2",
     [userId, movieId]
   );
 
   if (existing.rows.length > 0) {
     // Supprime le like
-    await query("DELETE FROM LikedMovie WHERE userId = $1 AND movieId = $2", [
+    await query("DELETE FROM liked_movies WHERE user_id = $1 AND movie_id = $2", [
       userId,
       movieId,
     ]);
@@ -17,7 +17,7 @@ export async function toggleLikedMovie(userId: number, movieId: string) {
   } else {
     // Ajoute le like
     await query(
-      "INSERT INTO LikedMovie (userId, movieId) VALUES ($1, $2)",
+      "INSERT INTO liked_movies (user_id, movie_id) VALUES ($1, $2)",
       [userId, movieId]
     );
     return { action: "added" };
