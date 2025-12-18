@@ -18,7 +18,7 @@ app.use(cors( {
   credentials: true
 } ));
 app.use(express.json());
-app.use("/users", auth, userRouter);
+app.use("/users", userRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello from the backend!');

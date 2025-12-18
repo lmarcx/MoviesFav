@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { toggleLikedMovie } from "../services/likedMovieService";
+import auth from "../middleware/auth";
 
 
 const router = Router();
@@ -22,7 +23,7 @@ const ensureAuthenticatedUserMatchesParam = (req: any, res: any, next: any) => {
   next();
 };
 
-router.post("/:userId/liked", ensureAuthenticatedUserMatchesParam, async (req, res, next) => {
+router.post("/:userId/liked", auth, ensureAuthenticatedUserMatchesParam, async (req, res, next) => {
   try {
     const userId = parseInt(req.params.userId, 10);
     const { movieId } = req.body;

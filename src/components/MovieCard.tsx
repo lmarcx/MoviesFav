@@ -25,19 +25,24 @@ export default function MovieCard({ movie }: MovieCardProps) {
   const isLiked = likedMovies.some((m) => m.id === movie.id);
   const isInWatchlist = watchlist.some((m) => m.id === movie.id);
 
+  const { token } = useAuth();
+
   const handleLikeClick = async (e: React.MouseEvent) => {
     e.preventDefault();
+    
     if (!isAuthenticated || !user) return;
 
    try {
     const response = await fetch(
-      `http://localhost:3000/users/${user.id}/liked`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ movieId: movie.id }),
-      }
+  `http://localhost:3000/users/${user.id}/liked`,
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ movieId: movie.id }),
+  }
     );
     console.log(response);
     if (!response.ok) throw new Error("Failed to toggle like");
