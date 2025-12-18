@@ -26,3 +26,15 @@ GET http://localhost:3000/api/users
 # @name Get Users (Authorized)
 GET http://localhost:3000/api/users
 Authorization: Bearer {{Login User.response.body.token}}
+
+
+###
+# @name Post Liked Movies (Authorized)
+POST http://localhost:3000/api/:userId/liked
+Authorization: Bearer {{Login User.response.body.token}}
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "movieId": "812381"
+}

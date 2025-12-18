@@ -4,6 +4,7 @@ import "./Header.css";
 
 export default function Header() {
   const { isAuthenticated, logout } = useAuth();
+  const userId = isAuthenticated ? useAuth().user?.id : null;
 
   return (
     <header className="header">
@@ -18,7 +19,7 @@ export default function Header() {
           {isAuthenticated && (
             <>
               <li>
-                <Link to="/liked">Liked Movies</Link>
+                <Link to={`/${userId}/liked`}>Liked Movies</Link>
               </li>
               <li>
                 <Link to="/watchlist">Watchlist</Link>
